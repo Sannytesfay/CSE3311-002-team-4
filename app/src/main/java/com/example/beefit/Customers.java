@@ -2,34 +2,31 @@ package com.example.beefit;
 
 public class Customers {
 
-private String Name;
-private String Email;
-private Integer Age;
+    String Name;
+    String Email;
+    String Password;
+    String Age;
 
-    public Customers() {
+    public Customers(String name, String email, String password, String age) {
+        Name = name;
+        Email = email;
+        Password = password;
+        Age = age;
     }
 
     public String getName() {
         return Name;
     }
 
-    public void setName(String name) {
-        Name = name;
-    }
-
     public String getEmail() {
         return Email;
     }
 
-    public void setEmail(String email) {
-        Email = email;
+    public String getPassword() {
+        return Password;
     }
 
-    public Integer getAge() {
+    public String getAge() {
         return Age;
-    }
-
-    public void setAge(Integer age) {
-        Age = age;
     }
 }
