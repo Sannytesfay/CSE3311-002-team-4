@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "999726916811",
+    "firebase_url": "https://beefit-database-93831-default-rtdb.firebaseio.com",
     "project_id": "beefit-database-93831",
     "storage_bucket": "beefit-database-93831.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:999726916811:android:6f1694bc62cfb55585a74e",
+        "mobilesdk_app_id": "1:999726916811:android:8e716ae0ca331daf85a74e",
         "android_client_info": {
           "package_name": "com.example.beefit"
         }

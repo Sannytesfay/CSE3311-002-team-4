@@ -3,6 +3,7 @@ package com.example.beefit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -76,6 +77,8 @@ public class Register extends AppCompatActivity {
 
 
                                 Toast.makeText(Register.this,"Successfully added user",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Register.this,MainActivity.class);
+                                startActivity(intent);
 
                             }
 

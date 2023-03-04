@@ -21,6 +21,7 @@
         </activity>
         <activity
             android:name=".ResetPass"
+            android:parentActivityName=".MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -28,6 +29,7 @@
         </activity>
         <activity
             android:name=".Register"
+            android:parentActivityName=".MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
