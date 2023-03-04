@@ -2,16 +2,22 @@ package com.example.beefit;
 
 public class Customers {
 
+    String Username;
     String Name;
     String Email;
     String Password;
     String Age;
 
-    public Customers(String name, String email, String password, String age) {
+    public Customers(String username, String name, String email, String password, String age) {
+        Username = username;
         Name = name;
         Email = email;
         Password = password;
         Age = age;
+    }
+
+    public String getUsername() {
+        return Username;
     }
 
     public String getName() {
