@@ -2,110 +2,146 @@ package com.example.beefit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Register extends AppCompatActivity {
+public class Register extends AppCompatActivity implements View.OnClickListener {
 
-    EditText name,email,password,age,user;
-    Button Register;
+    EditText name,email,password,age,username;
+    //Button register;
+    AppCompatButton register;
 
-    DatabaseReference ref;
+
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
-        name = findViewById(R.id.addName);
-        email = findViewById(R.id.addEmail);
-        password = findViewById(R.id.addPass);
-        age = findViewById(R.id.addAge);
-        Register = findViewById(R.id.registerbttn);
-        user = findViewById(R.id.Username);
-
-        ref = FirebaseDatabase.getInstance().getReference().child("Customers");
+        mAuth = FirebaseAuth.getInstance();
 
 
-        Register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        name = (EditText) findViewById(R.id.addName);
+        email = (EditText) findViewById(R.id.addEmail);
+        password = (EditText) findViewById(R.id.addPass);
+        age = (EditText) findViewById(R.id.addAge);
 
-                // changing the TextEdit values to a string
-                String getname = name.getText().toString();
-                String getemail = email.getText().toString();
-                String getPass = password.getText().toString();
-                String getage = age.getText().toString();
-                String username = user.getText().toString();
+        register = (AppCompatButton) findViewById(R.id.registerbttn);
+        register.setOnClickListener(this);
 
-                //Checking if any of the fields required are empty
-                if(TextUtils.isEmpty(getname) || TextUtils.isEmpty(getemail) || TextUtils.isEmpty(getPass) || TextUtils.isEmpty(getage) || TextUtils.isEmpty(username))
-                {
-                    Toast.makeText(Register.this, "Error! All fields required.", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-
-                    ref.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                            //checks if the user doesn't already exist (email)
-                            if(snapshot.hasChild(username)) {
-                                Toast.makeText(Register.this,"Error! User already exists.",Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-
-                                ref.child("Customers").child(username).child("email").setValue(getemail);
-                                ref.child("Customers").child(username).child("name").setValue(getname);
-                                ref.child("Customers").child(username).child("password").setValue(getPass);
-                                ref.child("Customers").child(username).child("age").setValue(getage);
+        username = (EditText) findViewById(R.id.Username);
 
 
-
-                                Toast.makeText(Register.this,"Successfully added user",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Register.this,MainActivity.class);
-                                startActivity(intent);
-
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-
-
-
-                   /* ref.child("Customers").child(getemail).child("name").setValue(getname);
-                    ref.child("Customers").child(getemail).child("password").setValue(getPass);
-                    ref.child("Customers").child(getemail).child("age").setValue(getage);
-
-
-                    Toast.makeText(Register.this,"Successfully added user",Toast.LENGTH_SHORT).show();*/
-                }
-
-            }
-        });
     }
 
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.registerbttn:
+                registerUser();
+                break;
+        }
+    }
 
+    private void registerUser() {
+
+        String getname = name.getText().toString().trim();
+        String getemail = email.getText().toString().trim();
+        String getPass = password.getText().toString().trim();
+        String getage = age.getText().toString().trim();
+        String getUsername = username.getText().toString().trim();
+
+        if (getname.isEmpty()) {
+            name.setError("Full name is required!");
+            name.requestFocus();
+            return;
+        }
+
+        if (getage.isEmpty()) {
+            age.setError("Age is required!");
+            age.requestFocus();
+            return;
+        }
+
+        if (getemail.isEmpty()) {
+            email.setError("Email is required!");
+            email.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(getemail).matches()) {
+            email.setError("Please provide valid email");
+            email.requestFocus();
+            return;
+        }
+
+        if (getPass.isEmpty()) {
+            password.setError("Password is required!");
+            password.requestFocus();
+            return;
+        }
+
+        if (getPass.length() < 6) {
+            password.setError("Minimum password length should be 6");
+            password.requestFocus();
+            return;
+        }
+
+        if (getUsername.isEmpty()) {
+            username.setError("Username required!");
+            username.requestFocus();
+            return;
+        }
+
+        mAuth.createUserWithEmailAndPassword(getemail,getPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    User user = new User(getname,getUsername,getage,getemail);
+                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(Register.this,"You have successfully created an account!", Toast.LENGTH_LONG);
+                                    }
+                                    else {
+                                        Toast.makeText(Register.this,"Failed to register! please try again!", Toast.LENGTH_LONG);
+                                    }
+                                }
+                            });
+                }
+                else {
+                    Toast.makeText(Register.this,"Failed to register! Please try again!", Toast.LENGTH_LONG);
+
+                }
+            }
+        });
+
+
+
+    }
 }
