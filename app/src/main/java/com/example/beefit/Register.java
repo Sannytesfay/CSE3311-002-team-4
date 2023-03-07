@@ -74,17 +74,18 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         String getage = age.getText().toString().trim();
         String getUsername = username.getText().toString().trim();
 
+        if (getUsername.isEmpty()) {
+            username.setError("Username required!");
+            username.requestFocus();
+            return;
+        }
+
         if (getname.isEmpty()) {
             name.setError("Full name is required!");
             name.requestFocus();
             return;
         }
 
-        if (getage.isEmpty()) {
-            age.setError("Age is required!");
-            age.requestFocus();
-            return;
-        }
 
         if (getemail.isEmpty()) {
             email.setError("Email is required!");
@@ -110,11 +111,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
         }
 
-        if (getUsername.isEmpty()) {
-            username.setError("Username required!");
-            username.requestFocus();
+        if (getage.isEmpty()) {
+            age.setError("Age is required!");
+            age.requestFocus();
             return;
         }
+
 
         mAuth.createUserWithEmailAndPassword(getemail,getPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -127,6 +129,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Toast.makeText(Register.this,"You have successfully created an account!", Toast.LENGTH_LONG);
+                                        startActivity(new Intent(Register.this,GeneralQuestions.class));
+
                                     }
                                     else {
                                         Toast.makeText(Register.this,"Failed to register! please try again!", Toast.LENGTH_LONG);
