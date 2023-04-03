@@ -3,30 +3,29 @@ package com.example.beefit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-public class MainPage extends AppCompatActivity implements View.OnClickListener {
+public class weeklyWorkout extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView weeklyWorkout;
+    TextView day_1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
+        setContentView(R.layout.activity_weekly_workout);
 
-        weeklyWorkout = (ImageView) findViewById(R.id.orangebutton);
-        weeklyWorkout.setOnClickListener(this);
-
-
+        day_1 = (TextView) findViewById(R.id.day1);
+        day_1.setOnClickListener(this);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.orangebutton:
-                startActivity(new Intent(this,weeklyWorkout.class));
+            case R.id.day1:
+                startActivity(new Intent(this,workoutDemo.class));
                 break;
         }
     }

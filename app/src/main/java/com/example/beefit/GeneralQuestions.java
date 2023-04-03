@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class GeneralQuestions extends AppCompatActivity {
     String[] level = {"Beginner", "Intermediate", "Gym Rat"};
@@ -23,6 +24,7 @@ public class GeneralQuestions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_questions);
+
 
         //Levels Dropdown
         autoCompleteTextView_levels = findViewById(R.id.level_completeTextView);
@@ -41,6 +43,7 @@ public class GeneralQuestions extends AppCompatActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.StartButton:
+
                         startActivity(new Intent(GeneralQuestions.this,MainPage.class));
                         break;
                 }
