@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class MainPage extends AppCompatActivity implements View.OnClickListener {
 
     ImageView weeklyWorkout;
+    ImageButton stopwatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,15 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener 
 
         weeklyWorkout = (ImageView) findViewById(R.id.orangebutton);
         weeklyWorkout.setOnClickListener(this);
+
+        stopwatch = (ImageButton) findViewById(R.id.Stopwatch_button);
+        stopwatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainPage.this, Stopwatch.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
