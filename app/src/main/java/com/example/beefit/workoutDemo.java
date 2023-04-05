@@ -1,10 +1,22 @@
 package com.example.beefit;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,20 +31,42 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class workoutDemo extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class workoutDemo extends AppCompatActivity implements View.OnClickListener {
+
+    //push day demo
+    private static final String TAG = "workoutDemo";
     private VideoView workoutVideo;
-    private TextView currentWorkoutTitle, currentWorkoutDescription;
+    private TextView currentWorkoutTitle, currentWorkoutDescription,nextWorkoutTitle, nextWorkoutDescription;
 
     private DatabaseReference workoutRef;
-    private StorageReference videoRef;
+    private DatabaseReference nextWorkout;
+
+
+
+
+    //buttons
+    AppCompatButton next,done;
+    int workoutCounter;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_demo);
+        workoutCounter = 1;
 
+
+        //setting up buttons
+        done = (AppCompatButton) findViewById(R.id.doneButton);
+        done.setOnClickListener(this);
+
+        next = (AppCompatButton) findViewById(R.id.nextButton);
+        next.setOnClickListener(this);
+
+        //for current workout
         MediaController mediaController = new MediaController(this);
 
         workoutVideo = findViewById(R.id.workout_video);
@@ -42,6 +76,9 @@ public class workoutDemo extends AppCompatActivity {
         currentWorkoutTitle = findViewById(R.id.current_workout_title);
         currentWorkoutDescription = findViewById(R.id.current_workout_description);
 
+        nextWorkoutTitle = findViewById(R.id.next_workout_title);
+        nextWorkoutDescription = findViewById(R.id.next_workout_description);
+
         workoutRef = FirebaseDatabase.getInstance().getReference("Workouts/Push/Workout_1");
         workoutRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -50,7 +87,6 @@ public class workoutDemo extends AppCompatActivity {
                     String title = snapshot.child("Title").getValue(String.class);
                     String description = snapshot.child("Description").getValue(String.class);
                     String videoUrl = snapshot.child("Video").getValue(String.class);
-                    //System.out.println(videoUrl);
 
                     // Display workout title and description on screen
                     currentWorkoutTitle.setText(title);
@@ -60,22 +96,33 @@ public class workoutDemo extends AppCompatActivity {
                     workoutVideo.setVideoURI(uri);
                     workoutVideo.start();
 
+                    //next workout
+                    workoutCounter++;
+                    String workout = "Workouts/Push/Workout_" + workoutCounter;
+                    workoutCounter--;
 
-                     //Get workout video from Firebase storage and display on screen
-/*
-                    videoRef = FirebaseStorage.getInstance().getReferenceFromUrl(videoUrl);
-
-                    videoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    workoutRef = FirebaseDatabase.getInstance().getReference(workout);
+                    workoutRef.addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onSuccess(Uri uri) {
-                            //workoutVideo.setVideoURI(uri);
-                            workoutVideo.setVideoPath("https://firebasestorage.googleapis.com/v0/b/beefit-database-93831.appspot.com/o/FC197F8E-2F6C-4B8E-B342-95EC0344DA04_2_0_a.mov?alt=media&token=1eea8df3-01cf-40f8-9757-611a3079ce9e");
-                            workoutVideo.start();
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                String nextTitle = snapshot.child("Title").getValue(String.class);
+                                String nextDescription = snapshot.child("Description").getValue(String.class);
+
+                                // Display workout title and description on screen
+                                nextWorkoutTitle.setText(nextTitle);
+                                nextWorkoutDescription.setText(nextDescription);
+
+                            }
                         }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(workoutDemo.this,"Failed to load video",Toast.LENGTH_LONG).show();
+                        }
+
                     });
-*/
-
-
+                    //next workout
 
                 }
             }
@@ -88,4 +135,101 @@ public class workoutDemo extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.nextButton:
+                if (workoutCounter < 5) {
+                    workoutCounter++;
+                    String workout = "Workouts/Push/Workout_" + workoutCounter;
+                    workoutRef = FirebaseDatabase.getInstance().getReference(workout);
+                    workoutRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                String title = snapshot.child("Title").getValue(String.class);
+                                String description = snapshot.child("Description").getValue(String.class);
+                                String videoUrl = snapshot.child("Video").getValue(String.class);
+
+                                // Display workout title and description on screen
+                                currentWorkoutTitle.setText(title);
+                                currentWorkoutDescription.setText(description);
+
+                                Uri uri = Uri.parse(videoUrl);
+                                workoutVideo.setVideoURI(uri);
+                                workoutVideo.start();
+
+                                //next workout
+                                if (workoutCounter != 4) {
+                                    workoutCounter++;
+                                    String workout = "Workouts/Push/Workout_" + workoutCounter;
+                                    workoutCounter--;
+                                    workoutRef = FirebaseDatabase.getInstance().getReference(workout);
+                                    workoutRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()) {
+                                                String nextTitle = snapshot.child("Title").getValue(String.class);
+                                                String nextDescription = snapshot.child("Description").getValue(String.class);
+
+                                                // Display workout title and description on screen
+                                                nextWorkoutTitle.setText(nextTitle);
+                                                nextWorkoutDescription.setText(nextDescription);
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(workoutDemo.this,"Failed to load video",Toast.LENGTH_LONG).show();
+                                        }
+
+                                    });
+                                }
+                                else {
+                                    nextWorkoutTitle.setText("");
+                                    nextWorkoutDescription.setText("");
+                                }
+                                //next workout
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(workoutDemo.this,"Failed to load video",Toast.LENGTH_LONG).show();
+                        }
+
+                    });
+
+                }else {
+                    Toast.makeText(workoutDemo.this,"This ii the last workout for this program",Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            case R.id.doneButton:
+                if(workoutCounter < 3) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("You are not done with your workout. Do you wish to still end it?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(workoutDemo.this,congrats.class));
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Do nothing and dismiss the dialog
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+                }
+                else{
+                    startActivity(new Intent(workoutDemo.this,congrats.class));
+                }
+        }
+
+    }
 }

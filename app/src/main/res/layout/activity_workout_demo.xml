@@ -46,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_below="@id/top_bar"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:foregroundGravity="center">
 
             <VideoView
                 android:id="@+id/workout_video"
@@ -61,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/video_container"
-            android:background="@android:color/white"
+            android:background="@drawable/background_btn_intro1"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -84,15 +85,92 @@
 
         </LinearLayout>
 
-        <!-- Following workouts section -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/following_workouts_recycler_view"
+        <LinearLayout
+            android:id="@+id/upnextbox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/current_workout_info"
-            android:padding="8dp" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/current_workout_info">
+
+
+            <TextView
+                android:id="@+id/upnext"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Up Next"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+        <!-- Following workouts section -->
+
+        <LinearLayout
+            android:id="@+id/nextworkoutbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/upnextbox"
+            android:background="@drawable/background_btn_intro1"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/next_workout_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="next Workout Title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/next_workout_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="next Workout Description"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+        <!-- Following workouts section -->
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nextButton"
+            style="@android:style/Widget.Button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_btn_intro1"
+            android:text="Next"
+            android:textColor="#f2a02b"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_below="@id/nextworkoutbox"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/doneButton"
+            style="@android:style/Widget.Button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_btn_intro1"
+            android:text="Done"
+            android:textColor="#f2a02b"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_below="@id/nextworkoutbox"
+            android:layout_alignRight="@id/nextworkoutbox"/>
+
+
 
     </RelativeLayout>
+
+
 
 
 
