@@ -27,7 +27,7 @@ public class User {
         this.userName = userName;
         this.age = age;
         this.email = email;
-        gymLevel = 2;
-        howManyTimesAWeek = 2;
+        //gymLevel = 2;
+        //howManyTimesAWeek = 2;
     }
 }
