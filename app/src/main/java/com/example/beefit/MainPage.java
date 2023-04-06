@@ -22,7 +22,7 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener 
         weeklyWorkout = (ImageView) findViewById(R.id.orangebutton);
         weeklyWorkout.setOnClickListener(this);
         menuButton = findViewById(R.id.menubutton);
-
+    //Menu Button
        menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

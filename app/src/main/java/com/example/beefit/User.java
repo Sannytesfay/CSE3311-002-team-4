@@ -27,6 +27,7 @@ public class User {
         this.userName = userName;
         this.age = age;
         this.email = email;
+        //Commenting out
         //gymLevel = 2;
         //howManyTimesAWeek = 2;
     }

@@ -104,7 +104,7 @@ public class Profile extends AppCompatActivity {
             Toast.makeText(Profile.this,"User not logged in",Toast.LENGTH_LONG).show();
         }
     }
-
+    //Passing Data to Edit Profile
     public void passUserData() {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

@@ -136,7 +136,7 @@ public class EditProfile extends AppCompatActivity {
             return false;
         }
     }
-
+    //Show Data in Edit Text Fields
     public void showData(){
         Intent intent = getIntent();
 

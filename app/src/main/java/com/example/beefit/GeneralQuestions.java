@@ -40,7 +40,7 @@ public class GeneralQuestions extends AppCompatActivity {
         adapterItems_days =  new ArrayAdapter<String>(this, R.layout.list_item, days);
         autoCompleteTextView_days.setAdapter(adapterItems_days);
 
-        //Save Info in DB
+        //Save Info in Database
         autoCompleteTextView_levels.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
