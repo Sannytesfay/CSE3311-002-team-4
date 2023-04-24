@@ -7,9 +7,11 @@
     android:background="@drawable/background_intro"
     tools:context=".weeklyWorkout">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <LinearLayout
             android:id="@+id/top_bar"
@@ -38,76 +40,46 @@
         </LinearLayout>
 
         <TextView
-            android:text="Day 1"
-            android:background="#DDDDDD"
-            android:layout_centerHorizontal="true"
+            android:id="@+id/day1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/day1"/>
+            android:background="@drawable/pushday"
+            android:text="Push"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/white"/>
 
         <TextView
-            android:text="Day 2"
-            android:background="#DDDDDD"
-            android:layout_centerHorizontal="true"
+            android:id="@+id/day2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_below="@id/day1"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/day2"/>
+            android:background="@drawable/legday"
+            android:text="Leg"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/white"/>
 
         <TextView
-            android:text="Day 3"
-            android:background="#DDDDDD"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/day2"
-            android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
             android:id="@+id/day3"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@id/day2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mainworkout"
+            android:text="Puil"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/white"
             />
 
-        <TextView
-            android:text="Day 4"
-            android:background="#DDDDDD"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/day3"
-            android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/day4"/>
 
-        <TextView
-            android:text="Day 5"
-            android:background="#DDDDDD"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/day4"
-            android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/day5"/>
-
-        <TextView
-            android:text="Day 6"
-            android:background="#DDDDDD"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/day5"
-            android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/day6"/>
-
-        <TextView
-            android:id="@+id/day7"
-            android:text="Day 7"
-            android:background="#DDDDDD"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/day6"
-            android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            />
 
     </RelativeLayout>
 

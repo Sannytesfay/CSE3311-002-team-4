@@ -16,7 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BeeFit"
         tools:targetApi="31">
-
+        <activity
+            android:name=".workoutDemoAbs"
+            android:exported="false" />
+        <activity
+            android:name=".workoutDemoLeg"
+            android:exported="false" />
+        <activity
+            android:name=".workoutDemoPull"
+            android:exported="false" />
         <activity
             android:name=".EditProfile"
             android:exported="false">

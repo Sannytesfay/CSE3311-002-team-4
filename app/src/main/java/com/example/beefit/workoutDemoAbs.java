@@ -4,67 +4,48 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
-
-public class workoutDemo extends AppCompatActivity implements View.OnClickListener {
+public class workoutDemoAbs extends AppCompatActivity implements View.OnClickListener {
 
     //push day demo
     private static final String TAG = "workoutDemo";
     private VideoView workoutVideo;
-    private TextView currentWorkoutTitle, currentWorkoutDescription,nextWorkoutTitle, nextWorkoutDescription;
+    private TextView currentWorkoutTitle, currentWorkoutDescription, nextWorkoutTitle, nextWorkoutDescription;
 
     private DatabaseReference workoutRef;
     private DatabaseReference nextWorkout;
 
 
-
-
     //buttons
-    AppCompatButton next,done;
+    AppCompatButton next, done;
     int workoutCounter;
     String levels;
 
     int workoutLev;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_workout_demo);
+        setContentView(R.layout.activity_workout_demo_abs);
         workoutCounter = 1;
-
-
-        getlevel();
+        workoutLev = 4;
 
 
         //setting up buttons
@@ -87,7 +68,7 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
         nextWorkoutTitle = findViewById(R.id.next_workout_title);
         nextWorkoutDescription = findViewById(R.id.next_workout_description);
 
-        workoutRef = FirebaseDatabase.getInstance().getReference("Workouts/Push/Workout_1");
+        workoutRef = FirebaseDatabase.getInstance().getReference("Workouts/Abs/Workout_1");
         workoutRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -106,7 +87,7 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
 
                     //next workout
                     workoutCounter++;
-                    String workout = "Workouts/Push/Workout_" + workoutCounter;
+                    String workout = "Workouts/Abs/Workout_" + workoutCounter;
                     workoutCounter--;
 
                     workoutRef = FirebaseDatabase.getInstance().getReference(workout);
@@ -126,7 +107,7 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(workoutDemo.this,"Failed to load video",Toast.LENGTH_LONG).show();
+                            Toast.makeText(workoutDemoAbs.this, "Failed to load video", Toast.LENGTH_LONG).show();
                         }
 
                     });
@@ -137,51 +118,12 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(workoutDemo.this,"Failed to load video",Toast.LENGTH_LONG).show();
+                Toast.makeText(workoutDemoAbs.this, "Failed to load video", Toast.LENGTH_LONG).show();
             }
 
         });
     }
 
-    private void getlevel() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            String uid = user.getUid();
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users");
-            userRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        String workoutLevel = snapshot.child(uid).child("Level").getValue(String.class);
-                        levels = (String) workoutLevel;
-                        Log.d("workout level",levels);
-                        if (levels.equals("Beginner")) {
-                            workoutLev = 4;
-                        }
-                        else if(levels.equals("Intermediate")){
-                            workoutLev = 5;
-                        }
-                        else if (levels.equals("Gym Rat")){
-                            workoutLev = 7;
-                        }
-                        else{
-                            workoutLev = 4;
-                        }
-                        Log.d("workout level","value = " + workoutLev);
-
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -190,7 +132,7 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
             case R.id.nextButton:
                 if (workoutCounter < workoutLev) {
                     workoutCounter++;
-                    String workout = "Workouts/Push/Workout_" + workoutCounter;
+                    String workout = "Workouts/Abs/Workout_" + workoutCounter;
                     workoutRef = FirebaseDatabase.getInstance().getReference(workout);
                     workoutRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -211,7 +153,7 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
                                 //next workout
                                 if (workoutCounter < workoutLev) {
                                     workoutCounter++;
-                                    String workout = "Workouts/Push/Workout_" + workoutCounter;
+                                    String workout = "Workouts/Abs/Workout_" + workoutCounter;
                                     workoutCounter--;
                                     workoutRef = FirebaseDatabase.getInstance().getReference(workout);
                                     workoutRef.addValueEventListener(new ValueEventListener() {
@@ -230,12 +172,11 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(workoutDemo.this,"Failed to load video",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(workoutDemoAbs.this, "Failed to load video", Toast.LENGTH_LONG).show();
                                         }
 
                                     });
-                                }
-                                else {
+                                } else {
                                     nextWorkoutTitle.setText("");
                                     nextWorkoutDescription.setText("");
                                 }
@@ -245,23 +186,23 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(workoutDemo.this,"Failed to load video",Toast.LENGTH_LONG).show();
+                            Toast.makeText(workoutDemoAbs.this, "Failed to load video", Toast.LENGTH_LONG).show();
                         }
 
                     });
 
-                }else {
-                    Toast.makeText(workoutDemo.this,"This ii the last workout for this program",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(workoutDemoAbs.this, "This ii the last workout for this program", Toast.LENGTH_LONG).show();
                 }
                 break;
 
             case R.id.doneButton:
-                if(workoutCounter < workoutLev) {
+                if (workoutCounter < workoutLev) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("You are not done with your workout. Do you wish to still end it?");
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            startActivity(new Intent(workoutDemo.this,congrats.class));
+                            startActivity(new Intent(workoutDemoAbs.this, congrats.class));
                         }
                     });
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -273,9 +214,8 @@ public class workoutDemo extends AppCompatActivity implements View.OnClickListen
                     AlertDialog alert = builder.create();
                     alert.show();
 
-                }
-                else{
-                    startActivity(new Intent(workoutDemo.this,congrats.class));
+                } else {
+                    startActivity(new Intent(workoutDemoAbs.this, congrats.class));
                 }
         }
 

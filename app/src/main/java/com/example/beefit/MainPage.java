@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 public class MainPage extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView weeklyWorkout, menuButton;
+    ImageView weeklyWorkout, menuButton,absWorkout;
     ImageButton stopwatch;
 
     @Override
@@ -21,6 +21,10 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener 
 
         weeklyWorkout = (ImageView) findViewById(R.id.orangebutton);
         weeklyWorkout.setOnClickListener(this);
+
+        absWorkout = (ImageView) findViewById(R.id.absworkout);
+        absWorkout.setOnClickListener(this);
+
         menuButton = findViewById(R.id.menubutton);
     //Menu Button
        menuButton.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +52,12 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener 
             case R.id.orangebutton:
                 startActivity(new Intent(this,weeklyWorkout.class));
                 break;
+            case R.id.absworkout:
+                startActivity(new Intent(this,workoutDemoAbs.class));
+                break;
+
         }
+
     }
 
     @Override
